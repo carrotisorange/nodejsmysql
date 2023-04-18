@@ -39,6 +39,7 @@ app.get('/createuserstable', (req, res)=>{
     });
 });
 
+
 //insert row in users table
 app.get('/storeuser/1', (req, res)=>{
     let user = {name: 'Juan', email: 'juan@gmail.com'};
@@ -84,6 +85,31 @@ app.get('/getuser/:id', (req, res)=>{
 
 
 //delete a user
+
+//global level
+// app.use(logger);
+
+app.get('/landingpage', auth, (req, res) =>{
+    res.send(`Admin is = ${req.admin}`)
+    res.send('This is landing page');
+});
+
+//next to proceed to the next middleware
+function logger(req, res, next){
+	console.log('This is a middleware');
+    res.send('This is a middleware');
+}
+
+function auth(req, res, next){
+    if(req.query.admin === 'true'){
+        req.admin = true
+        next()
+        return
+    }else{
+        res.send('Not authenticated');
+    }
+}
+
 
 app.listen(3000, function(){
     console.log("info",'Server is running at port : ' + 3000);
