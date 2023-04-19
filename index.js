@@ -1,5 +1,13 @@
+//import packages
 const express = require('express');
 const mysql = require('mysql');
+const path = require('path');
+const app = express();
+const userRoute = require('./routes/users');
+// const blogRoute = require('./routes/blogs');
+
+app.use('/user', userRoute);
+// app.use('/blog', blogRoute);
 
 //establish the connection
 const db = mysql.createConnection({
@@ -17,8 +25,11 @@ db.connect((err) => {
     console.log('Mysql is connected');
 });
 
-const app = express();
 
+
+//set the templating engine
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
 //routes
 //create a schema/db
@@ -80,15 +91,15 @@ app.get('/users', (req, res) => {
 // app.use(auth);
 
 //fetch a user
-app.get('/user/:id', auth, (req, res) => {
-    let sql = `SELECT * FROM users WHERE id = ${req.params.id}`;
-    db.query(sql, (err, result)=>{
-        if(err)
-            throw err;
-        console.log(result);
-        // res.send(result);
-    });
-});
+// app.get('/user/:id', auth, (req, res) => {
+//     let sql = `SELECT * FROM users WHERE id = ${req.params.id}`;
+//     db.query(sql, (err, result)=>{
+//         if(err)
+//             throw err;
+//         console.log(result);
+//         // res.send(result);
+//     });
+// });
 
 
 
@@ -127,7 +138,6 @@ function auth(req, res, next){
     if(req.query.role === 'true'){
         console.log('You are an admin');
         next()
-        // return
     }else{
         console.log('You are not an admin');
     }
@@ -135,8 +145,12 @@ function auth(req, res, next){
 
 // req => middleware =>  middleware =>  middleware => res
 
+//routes for users table 
+//create
+
+
 app.listen(3000, function(){
-    console.log("info "+ 'Server is running at port ' + 3000);
+    console.log('Server is running at port ' + 3000);
 });
 
 

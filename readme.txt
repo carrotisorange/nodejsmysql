@@ -7,6 +7,7 @@ express.js - routes -
 mysql - database
 
 npm init
+
 npm install --save mysql express
 
 create app.js - entry point
@@ -36,3 +37,24 @@ function auth(req, res, next){
 	}
 }
 
+templating engine
+
+refactoring codes
+
+import express on the new js files where the routes are transferred
+
+const express - require("express");
+const router = express.Router();
+
+instead of app, use router
+
+import a file from another folder
+const userRoute = require('./routes.user');
+
+create different endpoints for users - CRUD
+at the end of the routes file write module.exports = router
+
+
+at the entry point
+
+app.use('/user', userRoute);
